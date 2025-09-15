@@ -9,11 +9,16 @@ public class ClassSorting {
     private final static int THREADS = 4;
     private static final ExecutorService executor = Executors.newFixedThreadPool(THREADS);
 
+    private static SortingStrategy<?> lastStrategy = null;
+    private static boolean isSorted = false;
+
     public static <T> void sort(List<T> list, SortingStrategy<T> strategy) {
         Future<?> future = executor.submit(() -> quickSort(list, 0, list.size() - 1, strategy));
 
         try {
             future.get();
+            lastStrategy = strategy;
+            isSorted = true;
         } catch (Exception e){
             e.printStackTrace();
         } finally {

@@ -25,7 +25,7 @@ public class ClassSortingTest {
             return title;
         }
         @Override
-        public int getPage() {
+        public int getPages() {
             return page;
         }
         @Override

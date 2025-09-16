@@ -1,6 +1,8 @@
 package ru.team1.sorting.model;
 
-public class Book {
+import ru.team1.sorting.services.sorting.SortingStrategy;
+
+public class Book implements HasPage, HasYear, HasTitle {
     private final String title;
     private final int pages;
     private final int year;
@@ -45,8 +47,11 @@ public class Book {
         }
     }
 
+    @Override
     public String getTitle() { return title; }
+    @Override
     public int getPages() { return pages; }
+    @Override
     public int getYear() { return year; }
 
     @Override

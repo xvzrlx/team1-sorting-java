@@ -1,5 +1,5 @@
 package ru.team1.sorting.model;
 
 public interface HasPage {
-    int getPage();
+    int getPages();
 }

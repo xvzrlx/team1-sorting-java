@@ -1,10 +1,14 @@
 package ru.team1.sorting;
 
+import ru.team1.sorting.model.Book;
+import ru.team1.sorting.utils.FileDataLoad;
+
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
     private static final Scanner scanner = new Scanner(System.in);
-    private static boolean dataLoaded = false;
+    private static List<Book> currentBooks = null;
 
     public static void main(String[] args) {
         System.out.println("Sorting App");
@@ -45,27 +49,37 @@ public class Main {
         System.out.println("4. Stream");
         System.out.print("Выберите способ: ");
         int choice = getIntInput();
-
-        switch (choice) {
-            case 1 -> {
-                System.out.println("📂 Загрузка из файла");
-                dataLoaded = true;
+        try {
+            switch (choice) {
+                case 1 -> {
+                    System.out.print("Введите путь к файлу: ");
+                    String path = scanner.nextLine().trim();
+                    FileDataLoad loader = new FileDataLoad();
+                    currentBooks = loader.loadFromFile(path);
+                    //временно/выгрузка содержимого коллекции в консоль
+                    System.out.println("📚 Содержимое загруженной коллекции:");
+                    for (int i = 0; i < currentBooks.size(); i++) {
+                        System.out.println((i + 1) + ". " + currentBooks.get(i));
+                    }
+                }
+                case 2 -> {
+                    System.out.print("Введите размер: ");
+                    int size = getIntInput();
+                    System.out.println("🎲 Рандомная генерация");
+                }
+                case 3 -> {
+                    System.out.println("✍️ Ручной ввод");
+                }
+                case 4 -> {
+                    System.out.println("🌊 Загрузка через Stream");
+                }
+                default -> System.out.println("❌ Неверный выбор.");
             }
-            case 2 -> {
-                System.out.print("Введите размер: ");
-                int size = getIntInput();
-                System.out.println("🎲 Рандомная генерация");
-                dataLoaded = true;
+            if (currentBooks != null) {
+                System.out.println("✅ Данные загружены. Количество: " + currentBooks.size());
             }
-            case 3 -> {
-                System.out.println("✍️ Ручной ввод");
-                dataLoaded = true;
-            }
-            case 4 -> {
-                System.out.println("🌊 Загрузка через Stream");
-                dataLoaded = true;
-            }
-            default -> System.out.println("❌ Неверный выбор.");
+        } catch (Exception e) {
+            System.out.println("❌ Ошибка: " + e.getMessage());
         }
     }
 
@@ -74,7 +88,7 @@ public class Main {
     }
 
     private static void handleSearch() {
-        if (!dataLoaded) {
+        if (currentBooks == null || currentBooks.isEmpty()) {
             System.out.println("❌ Нет данных. Сначала заполните коллекцию.");
             return;
         }
@@ -96,7 +110,7 @@ public class Main {
     }
 
     private static void handleSorting() {
-        if (!dataLoaded) {
+        if (currentBooks == null || currentBooks.isEmpty()) {
             System.out.println("❌ Нет данных. Сначала заполните коллекцию.");
             return;
         }

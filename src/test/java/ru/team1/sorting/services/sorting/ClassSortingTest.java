@@ -2,9 +2,6 @@ package ru.team1.sorting.services.sorting;
 
 import org.junit.Test;
 import ru.team1.sorting.model.Book;
-import ru.team1.sorting.model.HasPage;
-import ru.team1.sorting.model.HasTitle;
-import ru.team1.sorting.model.HasYear;
 
 import java.util.ArrayList;
 import java.util.Arrays;

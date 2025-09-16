@@ -26,6 +26,10 @@ public class ClassSorting {
         }
     }
 
+    public static boolean isSortedWith(SortingStrategy<?> strategy) {
+        return isSorted && lastStrategy.getClass().equals(strategy.getClass());
+    }
+
     private static <T> void quickSort(List<T> list, int start, int end, SortingStrategy<T> strategy) {
         if (end <= start) return;
 

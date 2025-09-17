@@ -19,14 +19,14 @@ public class BinarySearchTest {
 
     @Test
     public void testSearchByTitle() {
-        int index = BinarySearch.search(books, "маленький принц", new SortByTitle<>(), new SearchByTitle<>());
+        var object = BinarySearch.search(books, "маленький принц", new SortByTitle<>(), new SearchByTitle<>());
     }
     @Test
     public void testSearchByYear() {
-        int index = BinarySearch.search(books, 1869, new SortByYear<>(), new SearchByYear<>());
+        var object = BinarySearch.search(books, 1869, new SortByYear<>(), new SearchByYear<>());
     }
     @Test
     public void testSearchByPages() {
-        int index = BinarySearch.search(books, 384, new SortByPages<>(), new SearchByPages<>());
+        var object = BinarySearch.search(books, 384, new SortByPages<>(), new SearchByPages<>());
     }
 }

@@ -7,8 +7,17 @@ import java.util.List;
 
 public class BinarySearch {
 
+    public static <T, K> T search(List<T> list, K key, SortingStrategy<T> sortingStrategy, SearchStrategy<T, K> searchStrategy) {
+        int index = binarySearch(list, key, sortingStrategy, searchStrategy);
+        if (index == -1) {
+            System.out.println("Совпадение не найдено!");
+            return null;
+        }
 
-    public static <T, K> int search(List<T> list,
+        return list.get(index);
+    }
+
+    public static <T, K> int binarySearch(List<T> list,
                                     K key,
                                     SortingStrategy<T> sortingStrategy,
                                     SearchStrategy<T, K> searchStrategy) {

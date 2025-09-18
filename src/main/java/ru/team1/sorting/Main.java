@@ -1,6 +1,14 @@
 package ru.team1.sorting;
 
 import ru.team1.sorting.model.Book;
+import ru.team1.sorting.services.search.BinarySearch;
+import ru.team1.sorting.services.search.SearchByPages;
+import ru.team1.sorting.services.search.SearchByTitle;
+import ru.team1.sorting.services.search.SearchByYear;
+import ru.team1.sorting.services.sorting.ClassSorting;
+import ru.team1.sorting.services.sorting.SortByPages;
+import ru.team1.sorting.services.sorting.SortByTitle;
+import ru.team1.sorting.services.sorting.SortByYear;
 import ru.team1.sorting.utils.FileDataLoad;
 
 import java.util.List;
@@ -99,13 +107,37 @@ public class Main {
         int choice = getIntInput();
 
         switch (choice) {
-            case 1 -> {
-                System.out.println("Бинарный поиск");
-            }
+            case 1 -> binarySearch();
             case 2 -> {
                 System.out.println("Поиск по элементу");
             }
             default -> System.out.println("❌ Неверный выбор.");
+        }
+    }
+
+    private static void binarySearch() {
+        System.out.println("\n--- Бинарный поиск ---");
+        System.out.println("1. По названию");
+        System.out.println("2. По году");
+        System.out.println("3. По страницам");
+        int choice = getIntInput();
+
+        switch (choice) {
+            case 1 -> {
+                System.out.println("🔤 Поиск по названию");
+                System.out.print("Введите название книги: ");
+                var book = BinarySearch.search(currentBooks, getStringInput(), new SortByTitle<>(), new SearchByTitle<>());
+            }
+            case 2 -> {
+                System.out.println("📅 Сортировка по году");
+                System.out.print("Введите год выпуска книги: ");
+                var book = BinarySearch.search(currentBooks, getIntInput(), new SortByYear<>(), new SearchByYear<>());
+            }
+            case 3 -> {
+                System.out.println("Сортировка по страницам");
+                System.out.print("Введите колличество страниц книги: ");
+                var book = BinarySearch.search(currentBooks, getIntInput(), new SortByPages<>(), new SearchByPages<>());
+            }
         }
     }
 
@@ -117,18 +149,25 @@ public class Main {
         System.out.println("\n--- Сортировка ---");
         System.out.println("1. По названию");
         System.out.println("2. По году");
-        System.out.println("3. По году (только чётные)");
+        System.out.println("3. По страницам");
+        System.out.println("4. По году (только чётные)");
         System.out.print("Выберите тип сортировки: ");
         int choice = getIntInput();
 
         switch (choice) {
             case 1 -> {
                 System.out.println("🔤 Сортировка по названию");
+                ClassSorting.sort(currentBooks, new SortByTitle<>());
             }
             case 2 -> {
                 System.out.println("📅 Сортировка по году");
+                ClassSorting.sort(currentBooks, new SortByYear<>());
             }
             case 3 -> {
+                System.out.println("Сортировка по страницам");
+                ClassSorting.sort(currentBooks, new SortByPages<>());
+            }
+            case 4 -> {
                 System.out.println("🔢 Сортировка по году (только чётные)");
             }
             default -> System.out.println("❌ Неверный выбор.");
@@ -143,5 +182,9 @@ public class Main {
                 System.out.print("❌ Введите число: ");
             }
         }
+    }
+
+    private static String getStringInput() {
+        return scanner.nextLine().trim();
     }
 }

@@ -1,10 +1,22 @@
 package ru.team1.sorting;
 
+import ru.team1.sorting.model.Book;
+import ru.team1.sorting.services.search.BinarySearch;
+import ru.team1.sorting.services.search.SearchByPages;
+import ru.team1.sorting.services.search.SearchByTitle;
+import ru.team1.sorting.services.search.SearchByYear;
+import ru.team1.sorting.services.sorting.ClassSorting;
+import ru.team1.sorting.services.sorting.SortByPages;
+import ru.team1.sorting.services.sorting.SortByTitle;
+import ru.team1.sorting.services.sorting.SortByYear;
+import ru.team1.sorting.utils.FileDataLoad;
+
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
     private static final Scanner scanner = new Scanner(System.in);
-    private static boolean dataLoaded = false;
+    private static List<Book> currentBooks = null;
 
     public static void main(String[] args) {
         System.out.println("Sorting App");
@@ -45,27 +57,37 @@ public class Main {
         System.out.println("4. Stream");
         System.out.print("Выберите способ: ");
         int choice = getIntInput();
-
-        switch (choice) {
-            case 1 -> {
-                System.out.println("📂 Загрузка из файла");
-                dataLoaded = true;
+        try {
+            switch (choice) {
+                case 1 -> {
+                    System.out.print("Введите путь к файлу: ");
+                    String path = scanner.nextLine().trim();
+                    FileDataLoad loader = new FileDataLoad();
+                    currentBooks = loader.loadFromFile(path);
+                    //временно/выгрузка содержимого коллекции в консоль
+                    System.out.println("📚 Содержимое загруженной коллекции:");
+                    for (int i = 0; i < currentBooks.size(); i++) {
+                        System.out.println((i + 1) + ". " + currentBooks.get(i));
+                    }
+                }
+                case 2 -> {
+                    System.out.print("Введите размер: ");
+                    int size = getIntInput();
+                    System.out.println("🎲 Рандомная генерация");
+                }
+                case 3 -> {
+                    System.out.println("✍️ Ручной ввод");
+                }
+                case 4 -> {
+                    System.out.println("🌊 Загрузка через Stream");
+                }
+                default -> System.out.println("❌ Неверный выбор.");
             }
-            case 2 -> {
-                System.out.print("Введите размер: ");
-                int size = getIntInput();
-                System.out.println("🎲 Рандомная генерация");
-                dataLoaded = true;
+            if (currentBooks != null) {
+                System.out.println("✅ Данные загружены. Количество: " + currentBooks.size());
             }
-            case 3 -> {
-                System.out.println("✍️ Ручной ввод");
-                dataLoaded = true;
-            }
-            case 4 -> {
-                System.out.println("🌊 Загрузка через Stream");
-                dataLoaded = true;
-            }
-            default -> System.out.println("❌ Неверный выбор.");
+        } catch (Exception e) {
+            System.out.println("❌ Ошибка: " + e.getMessage());
         }
     }
 
@@ -74,7 +96,7 @@ public class Main {
     }
 
     private static void handleSearch() {
-        if (!dataLoaded) {
+        if (currentBooks == null || currentBooks.isEmpty()) {
             System.out.println("❌ Нет данных. Сначала заполните коллекцию.");
             return;
         }
@@ -85,9 +107,7 @@ public class Main {
         int choice = getIntInput();
 
         switch (choice) {
-            case 1 -> {
-                System.out.println("Бинарный поиск");
-            }
+            case 1 -> binarySearch();
             case 2 -> {
                 System.out.println("Поиск по элементу");
             }
@@ -95,26 +115,59 @@ public class Main {
         }
     }
 
+    private static void binarySearch() {
+        System.out.println("\n--- Бинарный поиск ---");
+        System.out.println("1. По названию");
+        System.out.println("2. По году");
+        System.out.println("3. По страницам");
+        int choice = getIntInput();
+
+        switch (choice) {
+            case 1 -> {
+                System.out.println("🔤 Поиск по названию");
+                System.out.print("Введите название книги: ");
+                var book = BinarySearch.search(currentBooks, getStringInput(), new SortByTitle<>(), new SearchByTitle<>());
+            }
+            case 2 -> {
+                System.out.println("📅 Сортировка по году");
+                System.out.print("Введите год выпуска книги: ");
+                var book = BinarySearch.search(currentBooks, getIntInput(), new SortByYear<>(), new SearchByYear<>());
+            }
+            case 3 -> {
+                System.out.println("Сортировка по страницам");
+                System.out.print("Введите колличество страниц книги: ");
+                var book = BinarySearch.search(currentBooks, getIntInput(), new SortByPages<>(), new SearchByPages<>());
+            }
+        }
+    }
+
     private static void handleSorting() {
-        if (!dataLoaded) {
+        if (currentBooks == null || currentBooks.isEmpty()) {
             System.out.println("❌ Нет данных. Сначала заполните коллекцию.");
             return;
         }
         System.out.println("\n--- Сортировка ---");
         System.out.println("1. По названию");
         System.out.println("2. По году");
-        System.out.println("3. По году (только чётные)");
+        System.out.println("3. По страницам");
+        System.out.println("4. По году (только чётные)");
         System.out.print("Выберите тип сортировки: ");
         int choice = getIntInput();
 
         switch (choice) {
             case 1 -> {
                 System.out.println("🔤 Сортировка по названию");
+                ClassSorting.sort(currentBooks, new SortByTitle<>());
             }
             case 2 -> {
                 System.out.println("📅 Сортировка по году");
+                ClassSorting.sort(currentBooks, new SortByYear<>());
             }
             case 3 -> {
+                System.out.println("Сортировка по страницам");
+                ClassSorting.sort(currentBooks, new SortByPages<>());
+            }
+            case 4 -> {
                 System.out.println("🔢 Сортировка по году (только чётные)");
             }
             default -> System.out.println("❌ Неверный выбор.");
@@ -129,5 +182,9 @@ public class Main {
                 System.out.print("❌ Введите число: ");
             }
         }
+    }
+
+    private static String getStringInput() {
+        return scanner.nextLine().trim();
     }
 }

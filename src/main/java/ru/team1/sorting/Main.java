@@ -10,6 +10,7 @@ import ru.team1.sorting.services.sorting.SortByPages;
 import ru.team1.sorting.services.sorting.SortByTitle;
 import ru.team1.sorting.services.sorting.SortByYear;
 import ru.team1.sorting.utils.FileDataLoad;
+import ru.team1.sorting.utils.ManualDataLoad;
 
 import java.util.List;
 import java.util.Scanner;
@@ -76,7 +77,15 @@ public class Main {
                     System.out.println("🎲 Рандомная генерация");
                 }
                 case 3 -> {
-                    System.out.println("✍️ Ручной ввод");
+                    System.out.print("Введите размер: ");
+                    int size = getIntInput();
+                    ManualDataLoad loader = new ManualDataLoad();
+                    currentBooks = loader.loadManual(scanner, size);
+                    //временно/выгрузка содержимого коллекции в консоль
+                    System.out.println("📚 Содержимое загруженной коллекции:");
+                    for (int i = 0; i < currentBooks.size(); i++) {
+                        System.out.println((i + 1) + ". " + currentBooks.get(i));
+                    }
                 }
                 case 4 -> {
                     System.out.println("🌊 Загрузка через Stream");

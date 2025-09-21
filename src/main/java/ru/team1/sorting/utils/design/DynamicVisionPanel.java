@@ -202,12 +202,8 @@ public class DynamicVisionPanel extends AbstractPanel {
         });
 
         defaultSortButton.setStyle(
-                "-fx-background-color: blue;" +
-                        "-fx-text-fill: white;" +
-                        "-fx-border-color: blue;" +
-                        "-fx-border-width: 1px;" +
-                        "-fx-border-radius: 5px;" +
-                        "-fx-background-radius: 5px;");
+                "-fx-background-color: blue;"
+        );
 
         defaultSortButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -215,21 +211,11 @@ public class DynamicVisionPanel extends AbstractPanel {
                 defaultSort = !defaultSort;
                 if (defaultSort) {
                     defaultSortButton.setStyle(
-                            "-fx-background-color: blue;" +
-                                    "-fx-text-fill: white;" +
-                                    "-fx-border-color: red;" +
-                                    "-fx-border-width: 1px;" +
-                                    "-fx-border-radius: 5px;" +
-                                    "-fx-background-radius: 5px;"
+                            "-fx-background-color: blue;"
                     );
                 } else {
                     defaultSortButton.setStyle(
-                            "-fx-background-color: blue;" +
-                            "-fx-text-fill: white;" +
-                            "-fx-border-color: blue;" +
-                            "-fx-border-width: 1px;" +
-                            "-fx-border-radius: 5px;" +
-                            "-fx-background-radius: 5px;"
+                            "-fx-background-color: red;"
                     );
                 }
             }

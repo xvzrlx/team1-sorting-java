@@ -11,7 +11,6 @@ public class EvenOnlySorting {
 
         for(int i = 0; i < list.size(); i++){
             if(strategy.checkEven(list.get(i))){
-                //System.out.println(i);
                 list.set(i, evenList.removeFirst());
             }
         }

@@ -24,6 +24,7 @@ public class ClassSorting {
     public static <T> void sort(List<T> list, SortingStrategy<T> strategy) {
         ExecutorService executor = Executors.newFixedThreadPool(THREADS);
 
+
         futures.clear();
         futures.add(executor.submit(() -> quickSort(list, 0, list.size() - 1, strategy, executor)));
 
@@ -54,6 +55,7 @@ public class ClassSorting {
 
         futures.add(executor.submit(() -> quickSort(list, start, pivot - 1, strategy, executor)));
         futures.add(executor.submit(() -> quickSort(list, pivot + 1, end, strategy, executor)));
+
     }
 
     private static <T> int portion(List<T> list, int start, int end, SortingStrategy<T> strategy) {

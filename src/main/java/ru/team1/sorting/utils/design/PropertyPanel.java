@@ -13,6 +13,7 @@ public class PropertyPanel extends AbstractPanel {
     private Button cleanButton;
     private Button sortButton;
     private Button findButton;
+    private Button saveToFileButton;
 
     public PropertyPanel() {
         super(ROW_COUNT, COLUMN_COUNT, STYLE);
@@ -31,10 +32,31 @@ public class PropertyPanel extends AbstractPanel {
         sortButton.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         findButton = new Button();
         findButton.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        saveToFileButton = new Button();
+        saveToFileButton.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         loadImageToButton(
                 cleanButton,
                 "/images/clean_console.png",
-                "/images/clean_console_hovered.png"
+                "/images/clean_console_hovered.png",
+                "white"
+        );
+        loadImageToButton(
+                findButton,
+                "/images/search_button.png",
+                "/images/search_button_hovered.png",
+                "white"
+        );
+        loadImageToButton(
+                sortButton,
+                "/images/sort_icon.png",
+                "/images/sort_icon_hovered.png",
+                "white"
+        );
+        loadImageToButton(
+                saveToFileButton,
+                "/images/load_to_file.png",
+                "/images/load_to_file_hovered.png",
+                "white"
         );
     }
 
@@ -42,5 +64,6 @@ public class PropertyPanel extends AbstractPanel {
         add(sortButton, 0, 0);
         add(cleanButton, 1, 0);
         add(findButton, 0, 1);
+        add(saveToFileButton, 1, 1);
     }
 }

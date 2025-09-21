@@ -58,4 +58,19 @@ public class ConsolePanel extends AbstractPanel {
         addText("------------------------------------------------------------\n");
     }
 
+    public void print(String text) {
+        addText(text);
+    }
+
+    public void printBookFromSearch(Book book, long countInCollection) {
+        if (book == null) {
+            print("Книга не найдена!");
+            return;
+        }
+        addText("Найденная книга");
+//        addText("Количество экземпляров: " + countInCollection);
+        printBook(book);
+
+    }
+
 }

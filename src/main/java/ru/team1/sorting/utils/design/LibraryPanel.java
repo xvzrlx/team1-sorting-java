@@ -28,7 +28,8 @@ public class LibraryPanel extends AbstractPanel {
     private List<Button> bookButtons;
     @Getter
     private Map<Button, Book> bookMap;
-    private CustomArrayList<Book> books;
+    @Getter
+    private List<Book> books;
     private VBox vBox;
 
 
@@ -41,7 +42,7 @@ public class LibraryPanel extends AbstractPanel {
         vBox = new VBox();
         bookButtons = new ArrayList<>();
         bookMap = new HashMap<>();
-        books = new CustomArrayList();
+        books = new ArrayList<>();
         ScrollPane scrollPane = new ScrollPane(vBox);
         vBox.setStyle("-fx-background-color: ffe3fe;");
         scrollPane.setStyle(STYLE);
@@ -53,10 +54,17 @@ public class LibraryPanel extends AbstractPanel {
     }
 
     public void addBook(Book book) {
+        books.add(book);
+        addBookAfterSort(book);
+    }
+
+    public void addBookAfterSort(Book book) {
         Button button = createButton(book.getTitle());
         bookMap.put(button, book);
         bookButtons.add(button);
-        books.add(book);
+//        if (books.contains(book))
+//            books.clear();
+
         ImageView icon = new ImageView(new Image("/images/book_icon.png"));
         icon.setFitWidth(25);
         icon.setFitHeight(25);
@@ -137,5 +145,11 @@ public class LibraryPanel extends AbstractPanel {
         Button button = new Button(name);
         button.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         return button;
+    }
+
+    public void removeAllBooks() {
+        vBox.getChildren().clear();
+        bookButtons.clear();
+        bookMap.clear();
     }
 }

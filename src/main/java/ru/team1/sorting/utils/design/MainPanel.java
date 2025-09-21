@@ -2,13 +2,25 @@ package ru.team1.sorting.utils.design;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.TextField;
 import ru.team1.sorting.model.Book;
+import ru.team1.sorting.services.ThreadFinder.CountBooksTask;
+import ru.team1.sorting.services.search.BinarySearch;
+import ru.team1.sorting.services.search.SearchByPages;
+import ru.team1.sorting.services.search.SearchByTitle;
+import ru.team1.sorting.services.search.SearchByYear;
+import ru.team1.sorting.services.sorting.ClassSorting;
+import ru.team1.sorting.services.sorting.EvenOnlySorting;
+import ru.team1.sorting.services.sorting.SortType;
 import ru.team1.sorting.utils.CustomArrayList;
 import ru.team1.sorting.utils.FileDataLoad;
 import ru.team1.sorting.utils.ManualDataLoad;
 import ru.team1.sorting.utils.RandomDataLoad;
+import ru.team1.sorting.utils.save.FoundItemFileWriter;
+import ru.team1.sorting.utils.save.SortedFileWriter;
 
 import java.io.IOException;
+import java.util.List;
 
 public class MainPanel extends AbstractPanel {
 
@@ -23,6 +35,7 @@ public class MainPanel extends AbstractPanel {
     private final PropertyPanel propertyPanel = new PropertyPanel();
     private final ManualDataLoad manualDataLoad = new ManualDataLoad();
     private final RandomDataLoad randomDataLoad = new RandomDataLoad();
+    private final ClassSorting classSorting = new ClassSorting();
 
     public MainPanel() {
         super(ROW_COUNT, COLUMN_COUNT, STYLE);
@@ -99,6 +112,96 @@ public class MainPanel extends AbstractPanel {
                 handleBookButtons();
             }
         });
+        propertyPanel.getFindButton().setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                dynamicVisionPanel.search();
+            }
+        });
+        propertyPanel.getSaveToFileButton().setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                dynamicVisionPanel.saveToFile();
+            }
+        });
+        dynamicVisionPanel.getSaveToFileButton().setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                if (libraryPanel.getBooks().isEmpty()) return;
+                String filePath = dynamicVisionPanel.getFilePathTextField().getText();
+                if (filePath.isEmpty()) {
+                    dynamicVisionPanel.getFilePathTextField().setStyle("");
+                    return;
+                }
+                dynamicVisionPanel.getFilePathTextField().setStyle(null);
+                SortedFileWriter.writeSortedToFile(libraryPanel.getBooks(), filePath);
+            }
+        });
+        dynamicVisionPanel.getSearchButton().setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                TextField textField = dynamicVisionPanel.getTextFields().stream()
+                        .filter(tf -> !tf.getText().isBlank())
+                        .findFirst().orElseThrow();
+                int firstBlankIndex = dynamicVisionPanel.getTextFields().indexOf(textField);
+                Book book = null;
+                switch (firstBlankIndex) {
+                    case 0 -> book = BinarySearch.search(
+                                    libraryPanel.getBooks(),
+                                    textField.getText(),
+                                    SortType.BY_TITLE.getSortingStrategy(),
+                                    new SearchByTitle<>()
+
+                    );
+                    case 1 -> book = BinarySearch.search(
+                                    libraryPanel.getBooks(),
+                                    Integer.parseInt(textField.getText()),
+                                    SortType.BY_YEAR.getSortingStrategy(),
+                                    new SearchByYear<>()
+
+                    );
+                    case 2 -> book = BinarySearch.search(
+                                    libraryPanel.getBooks(),
+                                    Integer.parseInt(textField.getText()),
+                                    SortType.BY_PAGES.getSortingStrategy(),
+                                    new SearchByPages<>()
+
+                    );
+                }
+                long countInCollection = 0;
+                consolePanel.print(libraryPanel.getBooks().toString());
+//                if (book != null) {
+//                    countInCollection = new CountBooksTask(libraryPanel.getBooks(), book).countOccurrences();
+//                }
+
+                consolePanel.printBookFromSearch(book, countInCollection);
+                if (dynamicVisionPanel.isSaveToFileAfterSearch()) {
+                    if (dynamicVisionPanel.getFilePathSearchTextField().getText().isEmpty()) return;
+                    FoundItemFileWriter.writeFoundItem(book, dynamicVisionPanel.getFilePathSearchTextField().getText());
+                }
+            }
+        });
+        propertyPanel.getSortButton().setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                dynamicVisionPanel.sort();
+            }
+        });
+        dynamicVisionPanel.getSortButton().setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                List<Book> books = libraryPanel.getBooks();
+                if (dynamicVisionPanel.isDefaultSort())
+                    ClassSorting.sort(books, dynamicVisionPanel.getSortTypeToSort().getSortingStrategy());
+                else
+                    if (dynamicVisionPanel.getSortTypeToSort().getSortingStrategy().equals(SortType.BY_TITLE.getSortingStrategy())) return;
+                    EvenOnlySorting.sort(books, dynamicVisionPanel.getSortTypeToSort().getEvenStrategy());
+                libraryPanel.removeAllBooks();
+                books.forEach(libraryPanel::addBookAfterSort);
+                if (dynamicVisionPanel.isPrintToConsole()) libraryPanel.getBooks().forEach(consolePanel::printBook);
+                handleBookButtons();
+            }
+        });
     }
 
     private void handleBookButtons() {
@@ -110,5 +213,6 @@ public class MainPanel extends AbstractPanel {
                     }
                 }));
     }
+
 
 }

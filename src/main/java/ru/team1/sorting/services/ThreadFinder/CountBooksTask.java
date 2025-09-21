@@ -1,9 +1,10 @@
 package ru.team1.sorting.services.ThreadFinder;
+import lombok.SneakyThrows;
 import ru.team1.sorting.model.Book;
 import java.util.List;
 import java.util.concurrent.*;
 
-class CountBooksTask {
+public class CountBooksTask {
     protected final List<Book> books;
     private final Book targetBook;
 

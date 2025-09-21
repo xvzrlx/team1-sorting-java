@@ -1,6 +1,6 @@
 package ru.team1.sorting.services.sorting;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -11,7 +11,7 @@ import java.util.concurrent.Future;
 public class ClassSorting {
     private final static int THREADS = 4;
     private static final Queue<Future<?>> futures = new ConcurrentLinkedQueue<>();
-    private static final List<?> objects = new LinkedList<>();
+    private static final List<?> objects = new ArrayList<>();
 
     private static SortingStrategy<?> lastStrategy = null;
     private static boolean isSorted = false;

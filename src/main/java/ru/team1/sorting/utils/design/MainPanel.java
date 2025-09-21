@@ -3,6 +3,7 @@ package ru.team1.sorting.utils.design;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import ru.team1.sorting.model.Book;
+import ru.team1.sorting.services.sorting.ClassSorting;
 import ru.team1.sorting.utils.CustomArrayList;
 import ru.team1.sorting.utils.FileDataLoad;
 import ru.team1.sorting.utils.ManualDataLoad;
@@ -23,6 +24,7 @@ public class MainPanel extends AbstractPanel {
     private final PropertyPanel propertyPanel = new PropertyPanel();
     private final ManualDataLoad manualDataLoad = new ManualDataLoad();
     private final RandomDataLoad randomDataLoad = new RandomDataLoad();
+    private final ClassSorting classSorting = new ClassSorting();
 
     public MainPanel() {
         super(ROW_COUNT, COLUMN_COUNT, STYLE);
@@ -97,6 +99,33 @@ public class MainPanel extends AbstractPanel {
                 CustomArrayList<Book> randomBooks = randomDataLoad.getRandomBooks();
                 randomBooks.forEach(libraryPanel::addBook);
                 handleBookButtons();
+            }
+        });
+        propertyPanel.getFindButton().setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                dynamicVisionPanel.search();
+            }
+        });
+        dynamicVisionPanel.getSearchButton().setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+
+            }
+        });
+        propertyPanel.getSortButton().setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                dynamicVisionPanel.sort();
+            }
+        });
+        dynamicVisionPanel.getSortButton().setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                ClassSorting.sort(libraryPanel.getBooks(), dynamicVisionPanel.getSortType().getSortingStrategy());
+                libraryPanel.removeAllBooks();
+                libraryPanel.getBooks().forEach(libraryPanel::addBook);
+                if (dynamicVisionPanel.isPrintToConsole()) libraryPanel.getBooks().forEach(consolePanel::printBook);
             }
         });
     }

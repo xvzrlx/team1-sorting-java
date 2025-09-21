@@ -34,7 +34,20 @@ public class PropertyPanel extends AbstractPanel {
         loadImageToButton(
                 cleanButton,
                 "/images/clean_console.png",
-                "/images/clean_console_hovered.png"
+                "/images/clean_console_hovered.png",
+                "white"
+        );
+        loadImageToButton(
+                findButton,
+                "/images/search_button.png",
+                "/images/search_button_hovered.png",
+                "white"
+        );
+        loadImageToButton(
+                sortButton,
+                "/images/sort_icon.png",
+                "/images/sort_icon_hovered.png",
+                "white"
         );
     }
 

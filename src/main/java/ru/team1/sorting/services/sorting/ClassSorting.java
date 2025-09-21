@@ -9,10 +9,12 @@ public class ClassSorting {
     private final static int THREADS = 4;
     private static final ExecutorService executor = Executors.newFixedThreadPool(THREADS);
 
+
     private static SortingStrategy<?> lastStrategy = null;
     private static boolean isSorted = false;
 
     public static <T> void sort(List<T> list, SortingStrategy<T> strategy) {
+        ExecutorService executor = Executors.newFixedThreadPool(THREADS);
         Future<?> future = executor.submit(() -> quickSort(list, 0, list.size() - 1, strategy));
 
         try {
@@ -43,8 +45,6 @@ public class ClassSorting {
             rightFuture.get();
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            executor.shutdown();
         }
     }
 

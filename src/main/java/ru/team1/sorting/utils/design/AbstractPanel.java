@@ -90,7 +90,7 @@ public abstract class AbstractPanel extends GridPane {
         ));
     }
 
-    protected void loadImageToButton(Button button, String releasedPath, String pressedPath) {
+    protected void loadImageToButton(Button button, String releasedPath, String pressedPath, String backgroundColor) {
         button.setText("");
         button.setGraphic(null);
         ScaleTransition scaleUpPressed = new ScaleTransition(Duration.millis(50), button);
@@ -107,7 +107,7 @@ public abstract class AbstractPanel extends GridPane {
         scaleDownUnHovered.setToY(1.0);
         button.setStyle("-fx-cursor: hand;");
 
-        setImageToButton(button, releasedPath);
+        setImageToButton(button, releasedPath, backgroundColor);
 
         button.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
             scaleDownReleased.playFromStart();
@@ -116,16 +116,16 @@ public abstract class AbstractPanel extends GridPane {
             scaleUpPressed.playFromStart();
         });
         button.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> {
-            setImageToButton(button, pressedPath);
+            setImageToButton(button, pressedPath, backgroundColor);
             scaleUpHovered.playFromStart();
         });
         button.addEventHandler(MouseEvent.MOUSE_EXITED, e -> {
-            setImageToButton(button, releasedPath);
+            setImageToButton(button, releasedPath, backgroundColor);
             scaleDownUnHovered.playFromStart();
         });
     }
 
-    private void setImageToButton(Button button, String imagePath) {
+    private void setImageToButton(Button button, String imagePath, String backgroundColor) {
         Image pressedImage = new Image(getClass().getResource(imagePath).toExternalForm());
         BackgroundImage backgroundImage = new BackgroundImage(
                 pressedImage,
@@ -141,7 +141,7 @@ public abstract class AbstractPanel extends GridPane {
         );
         button.setBackground(new Background(
                 List.of(new BackgroundFill(
-                        Color.web("d6ffff"),
+                        Color.web(backgroundColor),
                         CornerRadii.EMPTY,
                         Insets.EMPTY)),
                 List.of(backgroundImage)));

@@ -7,13 +7,13 @@ import java.util.concurrent.Future;
 
 public class ClassSorting {
     private final static int THREADS = 4;
-    private static final ExecutorService executor = Executors.newFixedThreadPool(THREADS);
 
     private static SortingStrategy<?> lastStrategy = null;
     private static boolean isSorted = false;
 
     public static <T> void sort(List<T> list, SortingStrategy<T> strategy) {
-        Future<?> future = executor.submit(() -> quickSort(list, 0, list.size() - 1, strategy));
+        ExecutorService executor = Executors.newFixedThreadPool(THREADS);
+        Future<?> future = executor.submit(() -> quickSort(list, 0, list.size() - 1, strategy, executor));
 
         try {
             future.get();
@@ -30,21 +30,19 @@ public class ClassSorting {
         return isSorted && lastStrategy.getClass().equals(strategy.getClass());
     }
 
-    private static <T> void quickSort(List<T> list, int start, int end, SortingStrategy<T> strategy) {
+    private static <T> void quickSort(List<T> list, int start, int end, SortingStrategy<T> strategy, ExecutorService executor) {
         if (end <= start) return;
 
         int pivot = portion(list, start, end, strategy);
 
-        Future<?> leftFuture = executor.submit(() -> quickSort(list, start, pivot - 1, strategy));
-        Future<?> rightFuture = executor.submit(() -> quickSort(list, pivot + 1, end, strategy));
+        Future<?> leftFuture = executor.submit(() -> quickSort(list, start, pivot - 1, strategy, executor));
+        Future<?> rightFuture = executor.submit(() -> quickSort(list, pivot + 1, end, strategy, executor));
 
         try {
             leftFuture.get();
             rightFuture.get();
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            executor.shutdown();
         }
     }
 

@@ -170,7 +170,7 @@ public class MainPanel extends AbstractPanel {
                 }
                 long countInCollection = 0;
                 if (book != null) {
-                    countInCollection = new CountBooksTask(libraryPanel.getBooks(), book).countOccurrences();
+                    countInCollection = new CountBooksTask(libraryPanel.getBooks(), book).countOccurrences(libraryPanel.getBooks(), book);
                 }
 
                 consolePanel.printBookFromSearch(book, countInCollection);

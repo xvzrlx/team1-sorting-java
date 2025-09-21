@@ -7,13 +7,15 @@ import java.util.concurrent.Future;
 
 public class ClassSorting {
     private final static int THREADS = 4;
+    private static final ExecutorService executor = Executors.newFixedThreadPool(THREADS);
+
 
     private static SortingStrategy<?> lastStrategy = null;
     private static boolean isSorted = false;
 
     public static <T> void sort(List<T> list, SortingStrategy<T> strategy) {
         ExecutorService executor = Executors.newFixedThreadPool(THREADS);
-        Future<?> future = executor.submit(() -> quickSort(list, 0, list.size() - 1, strategy, executor));
+        Future<?> future = executor.submit(() -> quickSort(list, 0, list.size() - 1, strategy));
 
         try {
             future.get();
@@ -35,8 +37,8 @@ public class ClassSorting {
 
         int pivot = portion(list, start, end, strategy);
 
-        Future<?> leftFuture = executor.submit(() -> quickSort(list, start, pivot - 1, strategy, executor));
-        Future<?> rightFuture = executor.submit(() -> quickSort(list, pivot + 1, end, strategy, executor));
+        Future<?> leftFuture = executor.submit(() -> quickSort(list, start, pivot - 1, strategy));
+        Future<?> rightFuture = executor.submit(() -> quickSort(list, pivot + 1, end, strategy));
 
         try {
             leftFuture.get();

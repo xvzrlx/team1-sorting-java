@@ -65,17 +65,20 @@ public class LoadingPanel extends AbstractPanel {
         loadImageToButton(
                 add,
                 "/images/plus_button.png",
-                "/images/plus_button_hovered.png"
+                "/images/plus_button_hovered.png",
+                "d6ffff"
         );
         loadImageToButton(
                 remove,
                 "/images/minus_button.png",
-                "/images/minus_button_hovered.png"
+                "/images/minus_button_hovered.png",
+                "d6ffff"
         );
         loadImageToButton(
                 addBooks,
                 "/images/add.png",
-                "/images/add_hovered.png"
+                "/images/add_hovered.png",
+                "d6ffff"
         );
 
         manualInputPanel.add(add, 5, 0);
@@ -115,7 +118,8 @@ public class LoadingPanel extends AbstractPanel {
         loadImageToButton(
                 loadFromFileButton,
                 "/images/load.png",
-                "/images/load_hovered.png"
+                "/images/load_hovered.png",
+                "d6ffff"
         );
     }
 
@@ -127,7 +131,8 @@ public class LoadingPanel extends AbstractPanel {
         loadImageToButton(
                 randomLoadButton,
                 "/images/rand_button.png",
-                "/images/rand_button_hovered.png"
+                "/images/rand_button_hovered.png",
+                "d6ffff"
                 );
     }
 

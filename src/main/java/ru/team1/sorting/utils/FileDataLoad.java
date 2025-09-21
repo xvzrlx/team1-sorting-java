@@ -39,33 +39,7 @@ public class FileDataLoad extends DataLoad{
         System.out.println("✅ Загружено " + books.size() + " книг из файла.");
         return books;
     }
-        String[] parts = line.split(",");
-        if (parts.length != 3) {
-            throw new IllegalArgumentException("Неверный формат: ожидалось 3 поля, разделённых запятой");
-        }
 
-        String title = parts[0].trim();
-        int pages;
-        int year;
-
-        try {
-            pages = Integer.parseInt(parts[1].trim());
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Неверный формат числа страниц: " + parts[1]);
-        }
-
-        try {
-            year = Integer.parseInt(parts[2].trim());
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Неверный формат года: " + parts[2]);
-        }
-
-        return new Book.Builder()
-                .title(title)
-                .pages(pages)
-                .year(year)
-                .build();
-    }
 
     public CustomArrayList<Book> loadFromFileByStream(String filePath) throws IOException {
         if (filePath == null || filePath.isEmpty()) throw new RuntimeException("Путь к файлу не может быть пустым!");

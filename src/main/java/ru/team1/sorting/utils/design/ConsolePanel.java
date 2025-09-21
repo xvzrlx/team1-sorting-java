@@ -62,10 +62,15 @@ public class ConsolePanel extends AbstractPanel {
         addText(text);
     }
 
-    public void printBookFromSearch(Book book) {
-        if (book == null) print("Книга не найдена!");
+    public void printBookFromSearch(Book book, long countInCollection) {
+        if (book == null) {
+            print("Книга не найдена!");
+            return;
+        }
         addText("Найденная книга");
+//        addText("Количество экземпляров: " + countInCollection);
         printBook(book);
+
     }
 
 }

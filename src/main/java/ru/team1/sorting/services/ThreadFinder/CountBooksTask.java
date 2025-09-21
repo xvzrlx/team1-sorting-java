@@ -1,9 +1,10 @@
 package ru.team1.sorting.services.ThreadFinder;
+import lombok.SneakyThrows;
 import ru.team1.sorting.model.Book;
 import java.util.List;
 import java.util.concurrent.*;
 
-class CountBooksTask {
+public class CountBooksTask {
     protected final List<Book> books;
     private final Book targetBook;
 
@@ -12,7 +13,7 @@ class CountBooksTask {
         this.targetBook = targetBook;
     }
 
-    public long countOccurrences() throws InterruptedException, ExecutionException {
+    public long countOccurrences() {
         int numThreads = Runtime.getRuntime().availableProcessors();
         ExecutorService executor = Executors.newFixedThreadPool(numThreads);
 
@@ -35,11 +36,19 @@ class CountBooksTask {
         // Сбор результатов
         long totalCount = 0;
         for (Future<Long> result : results) {
-            totalCount += result.get();
+            try {
+                totalCount += result.get();
+            } catch (InterruptedException | ExecutionException e) {
+                throw new RuntimeException(e);
+            }
         }
 
         executor.shutdown();
-        executor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
+        try {
+            executor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
 
         return totalCount;
     }

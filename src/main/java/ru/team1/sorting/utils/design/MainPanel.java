@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.TextField;
 import ru.team1.sorting.model.Book;
+import ru.team1.sorting.services.ThreadFinder.CountBooksTask;
 import ru.team1.sorting.services.search.BinarySearch;
 import ru.team1.sorting.services.search.SearchByPages;
 import ru.team1.sorting.services.search.SearchByTitle;
@@ -167,8 +168,13 @@ public class MainPanel extends AbstractPanel {
 
                     );
                 }
+                long countInCollection = 0;
+                consolePanel.print(libraryPanel.getBooks().toString());
+//                if (book != null) {
+//                    countInCollection = new CountBooksTask(libraryPanel.getBooks(), book).countOccurrences();
+//                }
 
-                consolePanel.printBookFromSearch(book);
+                consolePanel.printBookFromSearch(book, countInCollection);
                 if (dynamicVisionPanel.isSaveToFileAfterSearch()) {
                     if (dynamicVisionPanel.getFilePathSearchTextField().getText().isEmpty()) return;
                     FoundItemFileWriter.writeFoundItem(book, dynamicVisionPanel.getFilePathSearchTextField().getText());

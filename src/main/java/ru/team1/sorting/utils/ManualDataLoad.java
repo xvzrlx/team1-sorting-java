@@ -41,7 +41,6 @@ public class ManualDataLoad extends DataLoad{
 
         return books;
     }
-
     public CustomArrayList<Book> getBooksFromGrids(List<GridPane> bookPanes) {
         if (bookPanes.isEmpty()) throw new RuntimeException("Сначала добавьте книги!");
         List<List<TextField>> textFields = bookPanes.stream()
@@ -74,5 +73,4 @@ public class ManualDataLoad extends DataLoad{
             );
         } else textField.setStyle(null);
     }
-
 }

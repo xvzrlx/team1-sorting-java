@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class FileDataLoad {
+public class FileDataLoad extends DataLoad{
     public List<Book> loadFromFile(String filePath) {
         if (filePath == null || filePath.trim().isEmpty()) {
             throw new IllegalArgumentException("Путь к файлу не может быть пустым");
@@ -39,10 +39,6 @@ public class FileDataLoad {
         System.out.println("✅ Загружено " + books.size() + " книг из файла.");
         return books;
     }
-
-    private Book parseBook(String line) {
-        // формат: "Название,страницы,год"
-
         String[] parts = line.split(",");
         if (parts.length != 3) {
             throw new IllegalArgumentException("Неверный формат: ожидалось 3 поля, разделённых запятой");
@@ -87,5 +83,4 @@ public class FileDataLoad {
                     .collect(CustomArrayList.toCustomArrayList());
         }
     }
-
 }

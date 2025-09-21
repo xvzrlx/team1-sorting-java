@@ -1,5 +1,7 @@
 package ru.team1.sorting.model;
 
+import ru.team1.sorting.services.sorting.SortingStrategy;
+
 public class Book implements HasPage, HasYear, HasTitle {
     private final String title;
     private final int pages;

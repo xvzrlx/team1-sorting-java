@@ -3,7 +3,9 @@ package ru.team1.sorting.utils.design;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import ru.team1.sorting.model.Book;
+import ru.team1.sorting.utils.CustomArrayList;
 import ru.team1.sorting.utils.FileDataLoad;
+import ru.team1.sorting.utils.ManualDataLoad;
 
 import java.io.IOException;
 import java.util.List;
@@ -19,6 +21,7 @@ public class MainPanel extends AbstractPanel {
     private final LibraryPanel libraryPanel = new LibraryPanel();
     private final LoadingPanel loadingPanel = new LoadingPanel();
     private final PropertyPanel propertyPanel = new PropertyPanel();
+    private final ManualDataLoad manualDataLoad = new ManualDataLoad();
 
     public MainPanel() {
         super(ROW_COUNT, COLUMN_COUNT, STYLE);
@@ -51,7 +54,7 @@ public class MainPanel extends AbstractPanel {
         loadingPanel.getAddBooks().setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                List<Book> books = loadingPanel.getBooksFromGrids();
+                CustomArrayList<Book> books = manualDataLoad.getBooksFromGrids(loadingPanel.getBookPanes());
                 loadingPanel.clearManualInputBookPane();
                 books.forEach(libraryPanel::addBook);
                 handleBookButtons();
@@ -76,7 +79,7 @@ public class MainPanel extends AbstractPanel {
                     throw new RuntimeException("Путь к файлу не должен быть пустым!");
                 }
                 loadingPanel.getFilePathTextField().setStyle(null);
-                List<Book> books;
+                CustomArrayList<Book> books;
                 try {
                     books = new FileDataLoad().loadFromFileByStream(text);
                 } catch (IOException e) {

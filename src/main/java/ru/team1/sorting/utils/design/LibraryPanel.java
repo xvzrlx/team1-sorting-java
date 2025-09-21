@@ -11,6 +11,7 @@ import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import lombok.Getter;
 import ru.team1.sorting.model.Book;
+import ru.team1.sorting.utils.CustomArrayList;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,7 +28,7 @@ public class LibraryPanel extends AbstractPanel {
     private List<Button> bookButtons;
     @Getter
     private Map<Button, Book> bookMap;
-    private List<Book> books;
+    private CustomArrayList<Book> books;
     private VBox vBox;
 
 
@@ -40,6 +41,7 @@ public class LibraryPanel extends AbstractPanel {
         vBox = new VBox();
         bookButtons = new ArrayList<>();
         bookMap = new HashMap<>();
+        books = new CustomArrayList();
         ScrollPane scrollPane = new ScrollPane(vBox);
         vBox.setStyle("-fx-background-color: ffe3fe;");
         scrollPane.setStyle(STYLE);
@@ -54,7 +56,7 @@ public class LibraryPanel extends AbstractPanel {
         Button button = createButton(book.getTitle());
         bookMap.put(button, book);
         bookButtons.add(button);
-
+        books.add(book);
         ImageView icon = new ImageView(new Image("/images/book_icon.png"));
         icon.setFitWidth(25);
         icon.setFitHeight(25);
@@ -135,10 +137,5 @@ public class LibraryPanel extends AbstractPanel {
         Button button = new Button(name);
         button.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         return button;
-    }
-
-    public void removeButton(Button button) {
-        bookMap.remove(button);
-        bookButtons.remove(button);
     }
 }

@@ -71,7 +71,7 @@ public class FileDataLoad {
                 .build();
     }
 
-    public List<Book> loadFromFileByStream(String filePath) throws IOException {
+    public CustomArrayList<Book> loadFromFileByStream(String filePath) throws IOException {
         if (filePath == null || filePath.isEmpty()) throw new RuntimeException("Путь к файлу не может быть пустым!");
         try (Stream<String> lines = Files.lines(Path.of(filePath))) {
             return lines
@@ -84,7 +84,7 @@ public class FileDataLoad {
                             .pages(Integer.parseInt(parts[1].trim()))
                             .year(Integer.parseInt(parts[2].trim()))
                             .build())
-                    .collect(Collectors.toList());
+                    .collect(CustomArrayList.toCustomArrayList());
         }
     }
 

@@ -1,6 +1,8 @@
 package ru.team1.sorting.services.ThreadFinder;
 import lombok.SneakyThrows;
 import ru.team1.sorting.model.Book;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
 
@@ -13,46 +15,47 @@ public class CountBooksTask {
         this.targetBook = targetBook;
     }
 
-    @SneakyThrows
-    public long countOccurrences() {
+    public static int countOccurrences(List<Book> books, Book targetBook){
+
+        // Число потоков для распараллеливания
         int numThreads = Runtime.getRuntime().availableProcessors();
-        ExecutorService executor = Executors.newFixedThreadPool(numThreads);
-
         int chunkSize = books.size() / numThreads;
-        int remainder = books.size() % numThreads;
 
-        Future<Long>[] results = new Future[numThreads];
+        // Создаем списки для сохранения результатов
+        List<CompletableFuture<Integer>> futures = new ArrayList<>(numThreads);
 
-        // Назначение задач
+        // Создаем задания для каждого потока
         for (int i = 0; i < numThreads; i++) {
-            int startIndex = i * chunkSize;
-            int endIndex = (i == numThreads - 1) ?
-                    startIndex + chunkSize + remainder - 1 :
-                    startIndex + chunkSize - 1;
+            int start = i * chunkSize;
+            int end = (i == numThreads - 1) ? books.size() : ((i + 1) * chunkSize);
 
-            SearchTask task = new SearchTask(books, startIndex, endIndex, targetBook);
-            results[i] = (Future<Long>) executor.submit(task);
+            // Копируем нужную часть списка, создавая полноценный ArrayList
+            ArrayList<Book> sublistCopy = new ArrayList<>(books.subList(start, end));
+
+            // Передаем копию подсписка в задание
+            futures.add(CompletableFuture.supplyAsync(() -> countOccurrences(targetBook, sublistCopy)));
         }
 
-        // Сбор результатов
-        long totalCount = 0;
-        for (Future<Long> result : results) {
-            if (!result.isDone()) Thread.sleep(1000); // Пропускаем незавершённые задачи
-            Long value = result.get();      // Получаем результат
-            if (value != null) {            // Обрабатываем только ненулевые значения
-                totalCount += value;
-            }
+        // Объединяем результаты выполнения потоков
+        int totalCount = 0;
+        for (CompletableFuture<Integer> future : futures) {
+            totalCount += future.join();
         }
 
-        executor.shutdown();
-        try {
-            executor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
+        System.out.println("Итого найдено экземпляров: " + totalCount);
         return totalCount;
     }
+
+    private static int countOccurrences(Book targetBook, ArrayList<Book> sublist) {
+        int count = 0;
+        for (Book book : sublist) {
+            if (book.equals(targetBook)) {
+                count++;
+            }
+        }
+        return count;
+    }
+
 
     private static class SearchTask implements Runnable {
         private final List<Book> books;

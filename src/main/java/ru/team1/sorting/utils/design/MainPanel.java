@@ -168,8 +168,11 @@ public class MainPanel extends AbstractPanel {
                             )
                     );
                 }
-
-
+            }
+        });
+        dynamicVisionPanel.getSaveToFileAfterSearch().setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
 
             }
         });

@@ -18,7 +18,9 @@ public class DynamicVisionPanel extends AbstractPanel {
 
     private GridPane searchPane;
     @Getter
-    private javafx.scene.control.Button searchButton;
+    private Button searchButton;
+    @Getter
+    private Button saveToFileAfterSearch;
 
 
     private GridPane sortPane;
@@ -58,7 +60,10 @@ public class DynamicVisionPanel extends AbstractPanel {
     private void searchInit() {
         searchPane = createGrid(8, 3);
         searchButton = new Button();
+        saveToFileAfterSearch = new Button();
+
         searchButton.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        saveToFileAfterSearch.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 
         searchPane.add(new Label("Название:"), 0, 0, 3, 1);
         searchPane.add(new Label("Год выпуска:"), 0, 1, 3, 1);
@@ -99,7 +104,13 @@ public class DynamicVisionPanel extends AbstractPanel {
                 "/images/search_button_hovered.png",
                 "ffd4fe"
         );
-
+        loadImageToButton(
+                saveToFileAfterSearch,
+                "/images/load_to_file.png",
+                "/images/load_to_file_hovered.png",
+                "ffd4fe"
+        );
+        searchPane.add(saveToFileAfterSearch, 7, 2);
         searchPane.add(searchButton, 6, 0, 2,2);
     }
 

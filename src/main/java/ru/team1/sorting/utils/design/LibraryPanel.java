@@ -54,11 +54,17 @@ public class LibraryPanel extends AbstractPanel {
     }
 
     public void addBook(Book book) {
+        books.add(book);
+        addBookAfterSort(book);
+    }
+
+    public void addBookAfterSort(Book book) {
         Button button = createButton(book.getTitle());
         bookMap.put(button, book);
         bookButtons.add(button);
-        if (books.contains(book))
-            books.clear();
+//        if (books.contains(book))
+//            books.clear();
+
         ImageView icon = new ImageView(new Image("/images/book_icon.png"));
         icon.setFitWidth(25);
         icon.setFitHeight(25);

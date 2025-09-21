@@ -126,12 +126,10 @@ public class MainPanel extends AbstractPanel {
             public void handle(ActionEvent actionEvent) {
                 List<Book> books = libraryPanel.getBooks();
                 ClassSorting.sort(books, dynamicVisionPanel.getSortType().getSortingStrategy());
-//                libraryPanel.removeAllBooks();
-//                for (int i = 0; i < books.size(); i++) {
-//                    libraryPanel.addBook(books.get(i));
-//                }
-                books.forEach(libraryPanel::addBook);
+                libraryPanel.removeAllBooks();
+                books.forEach(libraryPanel::addBookAfterSort);
                 if (dynamicVisionPanel.isPrintToConsole()) libraryPanel.getBooks().forEach(consolePanel::printBook);
+                handleBookButtons();
             }
         });
     }

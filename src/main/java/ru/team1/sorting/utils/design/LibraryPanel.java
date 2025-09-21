@@ -65,16 +65,16 @@ public class LibraryPanel extends AbstractPanel {
         button.setContentDisplay(ContentDisplay.LEFT);
 
         button.setStyle(
-                "-fx-background-color: #f0f4f8;" +  // светлый фон
-                        "-fx-text-fill: #333333;" +          // темный текст
-                        "-fx-font-family: 'Segoe UI';" +     // современный шрифт
+                "-fx-background-color: #f0f4f8;" +
+                        "-fx-text-fill: #333333;" +
+                        "-fx-font-family: 'Segoe UI';" +
                         "-fx-font-size: 12px;" +
                         "-fx-background-radius: 6;" +
                         "-fx-border-radius: 6;" +
                         "-fx-border-color: transparent;" +
                         "-fx-padding: 6 12 6 12;" +
                         "-fx-cursor: hand;" +
-                        "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 2,0,0,1);" // легкая тень
+                        "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 2,0,0,1);"
         );
 
 

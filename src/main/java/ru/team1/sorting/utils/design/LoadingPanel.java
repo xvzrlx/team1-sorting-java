@@ -7,12 +7,9 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import lombok.Getter;
-import ru.team1.sorting.model.Book;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class LoadingPanel extends AbstractPanel {
 
@@ -33,6 +30,9 @@ public class LoadingPanel extends AbstractPanel {
     private TextField filePathTextField;
     @Getter
     private Button loadFromFileButton;
+
+    @Getter
+    private Button randomLoadButton;
 
     @Getter
     private List<GridPane> bookPanes = new ArrayList<>();
@@ -117,12 +117,18 @@ public class LoadingPanel extends AbstractPanel {
                 "/images/load.png",
                 "/images/load_hovered.png"
         );
-
-
     }
 
     private void randomInputPanelInit() {
         randomInputPanel = createGrid(12, 7);
+        randomLoadButton = new Button();
+        randomLoadButton.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        randomInputPanel.add(randomLoadButton, 4, 2, 4, 4);
+        loadImageToButton(
+                randomLoadButton,
+                "/images/rand_button.png",
+                "/images/rand_button_hovered.png"
+                );
     }
 
     private void inputOptionInit() {
@@ -172,7 +178,7 @@ public class LoadingPanel extends AbstractPanel {
             switch (selected) {
                 case "Ручной ввод" -> changeInputOption(manualInputPanel);
                 case "Загрузка из файла" -> changeInputOption(inputFromFilePanel);
-                case "Рандомно" -> changeInputOption(randomInputPanel);
+                case "Рандом" -> changeInputOption(randomInputPanel);
             }
         });
     }

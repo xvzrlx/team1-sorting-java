@@ -85,7 +85,7 @@ public class CustomArrayList<V> implements Iterable<V> {
     @Override
     public Iterator<V> iterator() {
         return new Iterator<V>() {
-            private int cursor = 0; // текущая позиция
+            private int cursor = 0;
 
             @Override
             public boolean hasNext() {

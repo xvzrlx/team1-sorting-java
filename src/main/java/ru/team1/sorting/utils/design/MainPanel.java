@@ -6,9 +6,9 @@ import ru.team1.sorting.model.Book;
 import ru.team1.sorting.utils.CustomArrayList;
 import ru.team1.sorting.utils.FileDataLoad;
 import ru.team1.sorting.utils.ManualDataLoad;
+import ru.team1.sorting.utils.RandomDataLoad;
 
 import java.io.IOException;
-import java.util.List;
 
 public class MainPanel extends AbstractPanel {
 
@@ -22,6 +22,7 @@ public class MainPanel extends AbstractPanel {
     private final LoadingPanel loadingPanel = new LoadingPanel();
     private final PropertyPanel propertyPanel = new PropertyPanel();
     private final ManualDataLoad manualDataLoad = new ManualDataLoad();
+    private final RandomDataLoad randomDataLoad = new RandomDataLoad();
 
     public MainPanel() {
         super(ROW_COUNT, COLUMN_COUNT, STYLE);
@@ -31,6 +32,7 @@ public class MainPanel extends AbstractPanel {
     protected void customInitialization() {
         componentsInit();
         addComponents();
+        randomDataLoad.addBooks();
     }
 
     private void componentsInit() {
@@ -86,6 +88,14 @@ public class MainPanel extends AbstractPanel {
                     throw new RuntimeException(e);
                 }
                 books.forEach(libraryPanel::addBook);
+                handleBookButtons();
+            }
+        });
+        loadingPanel.getRandomLoadButton().setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                CustomArrayList<Book> randomBooks = randomDataLoad.getRandomBooks();
+                randomBooks.forEach(libraryPanel::addBook);
                 handleBookButtons();
             }
         });

@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FileDataLoad {
+public class FileDataLoad extends DataLoad{
     public List<Book> loadFromFile(String filePath) {
         if (filePath == null || filePath.trim().isEmpty()) {
             throw new IllegalArgumentException("Путь к файлу не может быть пустым");
@@ -36,34 +36,5 @@ public class FileDataLoad {
         return books;
     }
 
-    private Book parseBook(String line) {
-        // формат: "Название,страницы,год"
 
-        String[] parts = line.split(",");
-        if (parts.length != 3) {
-            throw new IllegalArgumentException("Неверный формат: ожидалось 3 поля, разделённых запятой");
-        }
-
-        String title = parts[0].trim();
-        int pages;
-        int year;
-
-        try {
-            pages = Integer.parseInt(parts[1].trim());
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Неверный формат числа страниц: " + parts[1]);
-        }
-
-        try {
-            year = Integer.parseInt(parts[2].trim());
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Неверный формат года: " + parts[2]);
-        }
-
-        return new Book.Builder()
-                .title(title)
-                .pages(pages)
-                .year(year)
-                .build();
-    }
 }

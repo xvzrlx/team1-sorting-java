@@ -4,8 +4,12 @@ import ru.team1.sorting.model.Book;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class FileDataLoad {
     public List<Book> loadFromFile(String filePath) {
@@ -66,4 +70,22 @@ public class FileDataLoad {
                 .year(year)
                 .build();
     }
+
+    public List<Book> loadFromFileByStream(String filePath) throws IOException {
+        if (filePath == null || filePath.isEmpty()) throw new RuntimeException("Путь к файлу не может быть пустым!");
+        try (Stream<String> lines = Files.lines(Path.of(filePath))) {
+            return lines
+                    .filter(line -> !line.isEmpty())
+                    .map(line -> line.split(","))
+                    .filter(parts -> parts.length == 3)
+                    .filter(parts -> (!parts[0].trim().isEmpty() && !parts[1].trim().isEmpty() && !parts[2].trim().isEmpty()))
+                    .map(parts -> new Book.Builder()
+                            .title(parts[0].trim())
+                            .pages(Integer.parseInt(parts[1].trim()))
+                            .year(Integer.parseInt(parts[2].trim()))
+                            .build())
+                    .collect(Collectors.toList());
+        }
+    }
+
 }

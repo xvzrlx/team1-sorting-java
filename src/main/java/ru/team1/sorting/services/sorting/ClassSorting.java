@@ -30,7 +30,7 @@ public class ClassSorting {
         return isSorted && lastStrategy.getClass().equals(strategy.getClass());
     }
 
-    private static <T> void quickSort(List<T> list, int start, int end, SortingStrategy<T> strategy, ExecutorService executor) {
+    private static <T> void quickSort(List<T> list, int start, int end, SortingStrategy<T> strategy) {
         if (end <= start) return;
 
         int pivot = portion(list, start, end, strategy);

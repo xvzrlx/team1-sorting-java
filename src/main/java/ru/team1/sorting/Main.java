@@ -5,10 +5,7 @@ import ru.team1.sorting.services.search.BinarySearch;
 import ru.team1.sorting.services.search.SearchByPages;
 import ru.team1.sorting.services.search.SearchByTitle;
 import ru.team1.sorting.services.search.SearchByYear;
-import ru.team1.sorting.services.sorting.ClassSorting;
-import ru.team1.sorting.services.sorting.SortByPages;
-import ru.team1.sorting.services.sorting.SortByTitle;
-import ru.team1.sorting.services.sorting.SortByYear;
+import ru.team1.sorting.services.sorting.*;
 import ru.team1.sorting.utils.FileDataLoad;
 import ru.team1.sorting.utils.ManualDataLoad;
 
@@ -18,6 +15,8 @@ import java.util.Scanner;
 public class Main {
     private static final Scanner scanner = new Scanner(System.in);
     private static List<Book> currentBooks = null;
+
+    private static final String EMPTY_MSG = "";
 
     public static void main(String[] args) {
         System.out.println("Sorting App");
@@ -82,10 +81,7 @@ public class Main {
                     ManualDataLoad loader = new ManualDataLoad();
                     currentBooks = loader.loadManual(scanner, size);
                     //временно/выгрузка содержимого коллекции в консоль
-                    System.out.println("📚 Содержимое загруженной коллекции:");
-                    for (int i = 0; i < currentBooks.size(); i++) {
-                        System.out.println((i + 1) + ". " + currentBooks.get(i));
-                    }
+                    printCollection("📚 Содержимое загруженной коллекции:");
                 }
                 case 4 -> {
                     System.out.println("🌊 Загрузка через Stream");
@@ -160,6 +156,7 @@ public class Main {
         System.out.println("2. По году");
         System.out.println("3. По страницам");
         System.out.println("4. По году (только чётные)");
+        System.out.println("5. По страницам (только чётные)");
         System.out.print("Выберите тип сортировки: ");
         int choice = getIntInput();
 
@@ -167,17 +164,27 @@ public class Main {
             case 1 -> {
                 System.out.println("🔤 Сортировка по названию");
                 ClassSorting.sort(currentBooks, new SortByTitle<>());
+                printCollection("📚 Содержимое отсортированной коллекции:");
             }
             case 2 -> {
                 System.out.println("📅 Сортировка по году");
                 ClassSorting.sort(currentBooks, new SortByYear<>());
+                printCollection("📚 Содержимое отсортированной коллекции:");
             }
             case 3 -> {
                 System.out.println("Сортировка по страницам");
                 ClassSorting.sort(currentBooks, new SortByPages<>());
+                printCollection("📚 Содержимое отсортированной коллекции:");
             }
             case 4 -> {
                 System.out.println("🔢 Сортировка по году (только чётные)");
+                EvenOnlySorting.sort(currentBooks, new SortEvenYear<>());
+                printCollection("📚 Содержимое отсортированной коллекции:");
+            }
+            case 5 -> {
+                System.out.println("🔢 Сортировка по страницам (только чётные)");
+                EvenOnlySorting.sort(currentBooks, new SortEvenPages<>());
+                printCollection("📚 Содержимое отсортированной коллекции:");
             }
             default -> System.out.println("❌ Неверный выбор.");
         }
@@ -195,5 +202,12 @@ public class Main {
 
     private static String getStringInput() {
         return scanner.nextLine().trim();
+    }
+
+    private static void printCollection(String msg){
+        System.out.println(msg);
+        for (int i = 0; i < currentBooks.size(); i++) {
+            System.out.println((i + 1) + ". " + currentBooks.get(i));
+        }
     }
 }

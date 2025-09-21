@@ -1,36 +1,31 @@
 package ru.team1.sorting.utils.save;
+
 import ru.team1.sorting.model.Book;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.List;
 
-public class SortedFileWriter {
-    public static <T extends Book> void writeSortedToFile(
-            List<T> books,
+public class FoundItemFileWriter {
+    public static void writeFoundItem(
+            Book book,
             String filename) {
 
-        validateParams(books, filename);
-
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename, true))) {
-            for (Book book : books) {
-                String line = formatBookToCsv(book);
-                writer.write(line);
-                writer.newLine();
-            }
-
-            System.out.println("Записано " + books.size() + " книг в файл: " + filename);
-
-        } catch (IOException e) {
-            throw new RuntimeException("Ошибка при записи в файл: " + filename, e);
-        }
-    }
-    private static <T extends Book> void validateParams(List<T> books, String filename) {
-        if (books == null) {
-            throw new IllegalArgumentException("Коллекция не может быть null");
+        if (book == null) {
+            throw new IllegalArgumentException("Найденный элемент не может быть null");
         }
         if (filename == null || filename.trim().isEmpty()) {
             throw new IllegalArgumentException("Имя файла не может быть пустым");
+        }
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename, true))) {
+            String line = formatBookToCsv(book);
+            writer.write(line);
+            writer.newLine();
+
+            System.out.println("Записана найденная книга в файл: " + filename);
+
+        } catch (IOException e) {
+            throw new RuntimeException("Ошибка при записи в файл: " + filename, e);
         }
     }
 

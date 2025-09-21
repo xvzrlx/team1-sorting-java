@@ -9,6 +9,7 @@ import ru.team1.sorting.services.search.SearchByPages;
 import ru.team1.sorting.services.search.SearchByTitle;
 import ru.team1.sorting.services.search.SearchByYear;
 import ru.team1.sorting.services.sorting.ClassSorting;
+import ru.team1.sorting.services.sorting.EvenOnlySorting;
 import ru.team1.sorting.services.sorting.SortType;
 import ru.team1.sorting.utils.CustomArrayList;
 import ru.team1.sorting.utils.FileDataLoad;
@@ -184,7 +185,9 @@ public class MainPanel extends AbstractPanel {
                 List<Book> books = libraryPanel.getBooks();
                 if (dynamicVisionPanel.isDefaultSort())
                     ClassSorting.sort(books, dynamicVisionPanel.getSortTypeToSort().getSortingStrategy());
-//                else
+                else
+                    if (dynamicVisionPanel.getSortTypeToSort().getSortingStrategy().equals(SortType.BY_TITLE.getSortingStrategy())) return;
+                    EvenOnlySorting.sort(books, dynamicVisionPanel.getSortTypeToSort().getEvenStrategy());
                 libraryPanel.removeAllBooks();
                 books.forEach(libraryPanel::addBookAfterSort);
                 if (dynamicVisionPanel.isPrintToConsole()) libraryPanel.getBooks().forEach(consolePanel::printBook);

@@ -7,8 +7,9 @@ import ru.team1.sorting.model.Book;
 @RequiredArgsConstructor
 @Getter
 public enum SortType {
-    BY_TITLE(new SortByTitle<Book>()), BY_YEAR(new SortByYear<Book>()), BY_PAGES(new SortByPages<Book>());
+    BY_TITLE(new SortByTitle<Book>(), new SortEvenPages<>()), BY_YEAR(new SortByYear<Book>(), new SortEvenYear<>()), BY_PAGES(new SortByPages<Book>(), new SortEvenPages<>());
 
     final SortingStrategy<Book> sortingStrategy;
+    final EvenStrategy<Book> evenStrategy;
 
 }

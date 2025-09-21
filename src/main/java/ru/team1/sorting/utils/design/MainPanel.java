@@ -2,6 +2,7 @@ package ru.team1.sorting.utils.design;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import lombok.SneakyThrows;
 import ru.team1.sorting.model.Book;
 import ru.team1.sorting.services.sorting.ClassSorting;
 import ru.team1.sorting.utils.CustomArrayList;
@@ -10,6 +11,7 @@ import ru.team1.sorting.utils.ManualDataLoad;
 import ru.team1.sorting.utils.RandomDataLoad;
 
 import java.io.IOException;
+import java.util.List;
 
 public class MainPanel extends AbstractPanel {
 
@@ -110,7 +112,7 @@ public class MainPanel extends AbstractPanel {
         dynamicVisionPanel.getSearchButton().setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-
+//                libraryPanel.get
             }
         });
         propertyPanel.getSortButton().setOnAction(new EventHandler<ActionEvent>() {
@@ -122,9 +124,13 @@ public class MainPanel extends AbstractPanel {
         dynamicVisionPanel.getSortButton().setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                ClassSorting.sort(libraryPanel.getBooks(), dynamicVisionPanel.getSortType().getSortingStrategy());
-                libraryPanel.removeAllBooks();
-                libraryPanel.getBooks().forEach(libraryPanel::addBook);
+                List<Book> books = libraryPanel.getBooks();
+                ClassSorting.sort(books, dynamicVisionPanel.getSortType().getSortingStrategy());
+//                libraryPanel.removeAllBooks();
+//                for (int i = 0; i < books.size(); i++) {
+//                    libraryPanel.addBook(books.get(i));
+//                }
+                books.forEach(libraryPanel::addBook);
                 if (dynamicVisionPanel.isPrintToConsole()) libraryPanel.getBooks().forEach(consolePanel::printBook);
             }
         });

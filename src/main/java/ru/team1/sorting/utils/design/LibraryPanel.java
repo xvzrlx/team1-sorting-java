@@ -57,7 +57,8 @@ public class LibraryPanel extends AbstractPanel {
         Button button = createButton(book.getTitle());
         bookMap.put(button, book);
         bookButtons.add(button);
-        books.add(book);
+        if (books.contains(book))
+            books.clear();
         ImageView icon = new ImageView(new Image("/images/book_icon.png"));
         icon.setFitWidth(25);
         icon.setFitHeight(25);
@@ -142,5 +143,7 @@ public class LibraryPanel extends AbstractPanel {
 
     public void removeAllBooks() {
         vBox.getChildren().clear();
+        bookButtons.clear();
+        bookMap.clear();
     }
 }

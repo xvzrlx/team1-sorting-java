@@ -58,6 +58,10 @@ public class ConsolePanel extends AbstractPanel {
         addText("------------------------------------------------------------\n");
     }
 
+    public void print(String text) {
+        addText(text);
+    }
+
     public void printBookFromSearch(Book book) {
         addText("Найденная книга");
         printBook(book);

@@ -34,6 +34,8 @@ public class DynamicVisionPanel extends AbstractPanel {
     private SortType sortType = SortType.BY_TITLE;
     @Getter
     private boolean printToConsole;
+    @Getter
+    private List<TextField> textFields;
 
     public DynamicVisionPanel() {
         super(ROW_COUNT, COLUMN_COUNT, STYLE);
@@ -63,7 +65,7 @@ public class DynamicVisionPanel extends AbstractPanel {
                         "-fx-font-size: 12px;" +
                         "-fx-font-family: 'Segoe UI';";
 
-        List<TextField> textFields = List.of(new TextField(), new TextField(), new TextField());
+        textFields = List.of(new TextField(), new TextField(), new TextField());
         for (int i = 0; i < 3; i++) {
             searchPane.add(textFields.get(i), 3, i, 3, 1);
             textFields.get(i).setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);

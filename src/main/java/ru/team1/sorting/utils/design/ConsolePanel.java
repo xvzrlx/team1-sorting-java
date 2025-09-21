@@ -68,7 +68,8 @@ public class ConsolePanel extends AbstractPanel {
             return;
         }
         addText("Найденная книга\n");
-        if (countInCollection > 0) addText("Количество экземпляров: " + countInCollection);
+        if (countInCollection > 0)
+            addText("Количество экземпляров: " + countInCollection +"\n");
         printBook(book);
 
     }

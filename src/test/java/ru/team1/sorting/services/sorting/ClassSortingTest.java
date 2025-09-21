@@ -44,4 +44,16 @@ public class ClassSortingTest {
     public void testSortingByYear() {
         ClassSorting.sort(books, new SortByYear<>());
     }
+    @Test
+    public void testGetSortingByTitleCollection() {
+        var objects = ClassSorting.getSortedCollection(books, new SortByTitle<>());
+    }
+    @Test
+    public void testGetSortingByPagesCollection() {
+        var objects = ClassSorting.getSortedCollection(books, new SortByPages<>());
+    }
+    @Test
+    public void testGetSortingByYearCollection() {
+        var objects = ClassSorting.getSortedCollection(books, new SortByYear<>());
+    }
 }

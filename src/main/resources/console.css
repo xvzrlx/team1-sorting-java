@@ -1,0 +1,33 @@
+.text-area {
+    -fx-control-inner-background: black;
+    -fx-text-fill: green;
+    -fx-font-family: Consolas;
+
+     -fx-focus-color: transparent;
+     -fx-faint-focus-color: transparent;
+     -fx-background-insets: 0;
+     -fx-background-color: black;
+     -fx-border-color: transparent;
+}
+
+.scroll-bar {
+    -fx-background-color: black;
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: #555555;
+    -fx-background-radius: 4;
+}
+
+.scroll-bar .increment-button,
+.scroll-bar .decrement-button {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+    -fx-shape: "";
+}
+
+.scroll-bar .increment-arrow,
+.scroll-bar .decrement-arrow {
+    -fx-shape: "";
+    -fx-padding: 0;
+}

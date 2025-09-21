@@ -11,9 +11,15 @@ import java.util.concurrent.Future;
 public class ClassSorting {
     private final static int THREADS = 4;
     private static final Queue<Future<?>> futures = new ConcurrentLinkedQueue<>();
+    private static final List<?> objects = new ArrayList<>();
 
     private static SortingStrategy<?> lastStrategy = null;
     private static boolean isSorted = false;
+
+    public static <T> List<T> getSortedCollection(List<T> list, SortingStrategy<T> sortingStrategy) {
+        sort(list, sortingStrategy);
+        return list;
+    }
 
     public static <T> void sort(List<T> list, SortingStrategy<T> strategy) {
         ExecutorService executor = Executors.newFixedThreadPool(THREADS);

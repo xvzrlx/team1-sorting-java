@@ -20,8 +20,9 @@ public class DynamicVisionPanel extends AbstractPanel {
     @Getter
     private Button searchButton;
     @Getter
-    private Button saveToFileAfterSearch;
-
+    private boolean saveToFileAfterSearch = false;
+    @Getter
+    private TextField filePathSearchTextField;
 
     private GridPane sortPane;
     @Getter
@@ -58,12 +59,14 @@ public class DynamicVisionPanel extends AbstractPanel {
     }
 
     private void searchInit() {
-        searchPane = createGrid(8, 3);
+        searchPane = createGrid(8, 4);
         searchButton = new Button();
-        saveToFileAfterSearch = new Button();
+        Button saveToFileAfterSearchButton = new Button();
+        filePathSearchTextField = new TextField();
 
         searchButton.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-        saveToFileAfterSearch.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        saveToFileAfterSearchButton.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        filePathSearchTextField.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 
         searchPane.add(new Label("Название:"), 0, 0, 3, 1);
         searchPane.add(new Label("Год выпуска:"), 0, 1, 3, 1);
@@ -97,6 +100,28 @@ public class DynamicVisionPanel extends AbstractPanel {
                 }
             });
         }
+        saveToFileAfterSearchButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                saveToFileAfterSearch = !saveToFileAfterSearch;
+                if (saveToFileAfterSearch) {
+                    loadImageToButton(
+                            saveToFileAfterSearchButton,
+                            "/images/load_to_file_hovered.png",
+                            "/images/load_to_file_hovered.png",
+                            "ffd4fe"
+                    );
+                } else {
+                    loadImageToButton(
+                            saveToFileAfterSearchButton,
+                            "/images/load_to_file.png",
+                            "/images/load_to_file.png",
+                            "ffd4fe"
+                    );
+                }
+
+            }
+        });
 
         loadImageToButton(
                 searchButton,
@@ -105,13 +130,15 @@ public class DynamicVisionPanel extends AbstractPanel {
                 "ffd4fe"
         );
         loadImageToButton(
-                saveToFileAfterSearch,
+                saveToFileAfterSearchButton,
                 "/images/load_to_file.png",
-                "/images/load_to_file_hovered.png",
+                "/images/load_to_file.png",
                 "ffd4fe"
         );
-        searchPane.add(saveToFileAfterSearch, 7, 2);
-        searchPane.add(searchButton, 6, 0, 2,2);
+        searchPane.add(new Label("Путь к файлу:"), 0, 3, 3, 1);
+        searchPane.add(filePathSearchTextField, 3, 3, 3, 1);
+        searchPane.add(saveToFileAfterSearchButton, 6, 3);
+        searchPane.add(searchButton, 6, 0, 2,3);
     }
 
     public void search() {

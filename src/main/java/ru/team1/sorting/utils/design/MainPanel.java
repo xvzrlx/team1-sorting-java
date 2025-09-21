@@ -15,6 +15,7 @@ import ru.team1.sorting.utils.CustomArrayList;
 import ru.team1.sorting.utils.FileDataLoad;
 import ru.team1.sorting.utils.ManualDataLoad;
 import ru.team1.sorting.utils.RandomDataLoad;
+import ru.team1.sorting.utils.save.FoundItemFileWriter;
 import ru.team1.sorting.utils.save.SortedFileWriter;
 
 import java.io.IOException;
@@ -132,7 +133,7 @@ public class MainPanel extends AbstractPanel {
                     return;
                 }
                 dynamicVisionPanel.getFilePathTextField().setStyle(null);
-                SortedFileWriter.writeSortedToFile(libraryPanel.getBooks(), filePath, SortType.BY_TITLE.getSortingStrategy());
+                SortedFileWriter.writeSortedToFile(libraryPanel.getBooks(), filePath);
             }
         });
         dynamicVisionPanel.getSearchButton().setOnAction(new EventHandler<ActionEvent>() {
@@ -142,38 +143,36 @@ public class MainPanel extends AbstractPanel {
                         .filter(tf -> !tf.getText().isBlank())
                         .findFirst().orElseThrow();
                 int firstBlankIndex = dynamicVisionPanel.getTextFields().indexOf(textField);
+                Book book = null;
                 switch (firstBlankIndex) {
-                    case 0 -> consolePanel.printBookFromSearch(
-                            BinarySearch.search(
-                                libraryPanel.getBooks(),
-                                textField.getText(),
-                                SortType.BY_TITLE.getSortingStrategy(),
-                                new SearchByTitle<>()
-                                )
-                        );
-                    case 1 -> consolePanel.printBookFromSearch(
-                            BinarySearch.search(
-                                libraryPanel.getBooks(),
-                                Integer.parseInt(textField.getText()),
-                                SortType.BY_YEAR.getSortingStrategy(),
-                                new SearchByYear<>()
-                            )
+                    case 0 -> book = BinarySearch.search(
+                                    libraryPanel.getBooks(),
+                                    textField.getText(),
+                                    SortType.BY_TITLE.getSortingStrategy(),
+                                    new SearchByTitle<>()
+
                     );
-                    case 2 -> consolePanel.printBookFromSearch(
-                            BinarySearch.search(
-                                libraryPanel.getBooks(),
-                                Integer.parseInt(textField.getText()),
-                                SortType.BY_PAGES.getSortingStrategy(),
-                                new SearchByPages<>()
-                            )
+                    case 1 -> book = BinarySearch.search(
+                                    libraryPanel.getBooks(),
+                                    Integer.parseInt(textField.getText()),
+                                    SortType.BY_YEAR.getSortingStrategy(),
+                                    new SearchByYear<>()
+
+                    );
+                    case 2 -> book = BinarySearch.search(
+                                    libraryPanel.getBooks(),
+                                    Integer.parseInt(textField.getText()),
+                                    SortType.BY_PAGES.getSortingStrategy(),
+                                    new SearchByPages<>()
+
                     );
                 }
-            }
-        });
-        dynamicVisionPanel.getSaveToFileAfterSearch().setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
 
+                consolePanel.printBookFromSearch(book);
+                if (dynamicVisionPanel.isSaveToFileAfterSearch()) {
+                    if (dynamicVisionPanel.getFilePathSearchTextField().getText().isEmpty()) return;
+                    FoundItemFileWriter.writeFoundItem(book, dynamicVisionPanel.getFilePathSearchTextField().getText());
+                }
             }
         });
         propertyPanel.getSortButton().setOnAction(new EventHandler<ActionEvent>() {
@@ -208,5 +207,6 @@ public class MainPanel extends AbstractPanel {
                     }
                 }));
     }
+
 
 }

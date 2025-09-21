@@ -1,9 +1,6 @@
 package ru.team1.sorting.utils.design;
 
-import javafx.scene.control.ScrollBar;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
 import ru.team1.sorting.model.Book;
 
 public class ConsolePanel extends AbstractPanel {
@@ -59,7 +56,7 @@ public class ConsolePanel extends AbstractPanel {
     }
 
     public void print(String text) {
-        addText(text);
+        addText(text+"\n");
     }
 
     public void printBookFromSearch(Book book, long countInCollection) {
@@ -67,8 +64,9 @@ public class ConsolePanel extends AbstractPanel {
             print("Книга не найдена!");
             return;
         }
-        addText("Найденная книга");
-//        addText("Количество экземпляров: " + countInCollection);
+        addText("Найденная книга\n");
+        if (countInCollection > 0)
+            addText("Количество экземпляров: " + countInCollection +"\n");
         printBook(book);
 
     }

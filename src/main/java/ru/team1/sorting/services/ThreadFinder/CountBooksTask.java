@@ -13,7 +13,8 @@ public class CountBooksTask {
         this.targetBook = targetBook;
     }
 
-    public long countOccurrences() throws InterruptedException, ExecutionException {
+    @SneakyThrows
+    public long countOccurrences() {
         int numThreads = Runtime.getRuntime().availableProcessors();
         ExecutorService executor = Executors.newFixedThreadPool(numThreads);
 
@@ -36,11 +37,19 @@ public class CountBooksTask {
         // Сбор результатов
         long totalCount = 0;
         for (Future<Long> result : results) {
-            totalCount += result.get();
+            if (!result.isDone()) Thread.sleep(1000); // Пропускаем незавершённые задачи
+            Long value = result.get();      // Получаем результат
+            if (value != null) {            // Обрабатываем только ненулевые значения
+                totalCount += value;
+            }
         }
 
         executor.shutdown();
-        executor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
+        try {
+            executor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
 
         return totalCount;
     }

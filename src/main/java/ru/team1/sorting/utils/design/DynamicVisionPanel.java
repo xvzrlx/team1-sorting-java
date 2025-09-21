@@ -16,12 +16,11 @@ public class DynamicVisionPanel extends AbstractPanel {
     private static final int ROW_COUNT = 1;
     private static final String STYLE = "-fx-background-color: ffd4fe;-fx-border-color: black; -fx-border-width: 2;";
 
-    @Getter
     private GridPane searchPane;
     @Getter
     private javafx.scene.control.Button searchButton;
 
-    @Getter
+
     private GridPane sortPane;
     @Getter
     private Button sortButton;
@@ -31,11 +30,19 @@ public class DynamicVisionPanel extends AbstractPanel {
     @Getter
     private Button printToConsoleButton;
     @Getter
-    private SortType sortType = SortType.BY_TITLE;
+    private SortType sortTypeToSort = SortType.BY_TITLE;
     @Getter
     private boolean printToConsole;
     @Getter
     private List<TextField> textFields;
+
+    private GridPane saveToFilePane;
+    @Getter
+    private Button saveToFileButton;
+    @Getter
+    private TextField filePathTextField;
+    @Getter
+    private SortType sortTypeToSaveToFile;
 
     public DynamicVisionPanel() {
         super(ROW_COUNT, COLUMN_COUNT, STYLE);
@@ -45,6 +52,7 @@ public class DynamicVisionPanel extends AbstractPanel {
     protected void customInitialization() {
         searchInit();
         sortInit();
+        saveToFileInit();
     }
 
     private void searchInit() {
@@ -70,7 +78,21 @@ public class DynamicVisionPanel extends AbstractPanel {
             searchPane.add(textFields.get(i), 3, i, 3, 1);
             textFields.get(i).setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
             textFields.get(i).setStyle(textFieldStyle);
+            if (i > 0) addOnlyDigitsConstraint(textFields.get(i));
         }
+
+        for (TextField tf : textFields) {
+            tf.textProperty().addListener((obs, oldVal, newVal) -> {
+                if (!newVal.isBlank()) {
+                    for (TextField other : textFields) {
+                        if (other != tf) {
+                            other.clear();
+                        }
+                    }
+                }
+            });
+        }
+
         loadImageToButton(
                 searchButton,
                 "/images/search_button.png",
@@ -106,11 +128,11 @@ public class DynamicVisionPanel extends AbstractPanel {
             if (newVal != null) {
                 RadioButton selected = (RadioButton) newVal;
                 if (selected == sortByTitle) {
-                    sortType = SortType.BY_TITLE;
+                    sortTypeToSort = SortType.BY_TITLE;
                 } else if (selected == sortByYear) {
-                   sortType = SortType.BY_YEAR;
+                   sortTypeToSort = SortType.BY_YEAR;
                 } else if (selected == sortByPages) {
-                    sortType = SortType.BY_PAGES;
+                    sortTypeToSort = SortType.BY_PAGES;
                 }
             }
         });
@@ -168,4 +190,29 @@ public class DynamicVisionPanel extends AbstractPanel {
         getChildren().clear();
         add(sortPane, 0 , 0);
     }
+
+    private void saveToFileInit() {
+        saveToFilePane = createGrid(7, 4);
+        saveToFileButton = new Button();
+        filePathTextField = new TextField();
+        saveToFileButton.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        filePathTextField.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+
+        loadImageToButton(
+                saveToFileButton,
+                "/images/load_to_file.png",
+                "/images/load_to_file_hovered.png",
+                "ffd4fe"
+        );
+
+        saveToFilePane.add(new Label("Введите путь к файлу:"), 1, 1, 4, 1);
+        saveToFilePane.add(filePathTextField, 1, 2, 4, 1);
+        saveToFilePane.add(saveToFileButton, 5, 2);
+    }
+
+    public void saveToFile() {
+        getChildren().clear();
+        add(saveToFilePane, 0, 0);
+    }
+
 }

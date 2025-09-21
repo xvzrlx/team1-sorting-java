@@ -3,7 +3,6 @@ package ru.team1.sorting.utils.design;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.TextField;
-import lombok.SneakyThrows;
 import ru.team1.sorting.model.Book;
 import ru.team1.sorting.services.search.BinarySearch;
 import ru.team1.sorting.services.search.SearchByPages;
@@ -15,6 +14,7 @@ import ru.team1.sorting.utils.CustomArrayList;
 import ru.team1.sorting.utils.FileDataLoad;
 import ru.team1.sorting.utils.ManualDataLoad;
 import ru.team1.sorting.utils.RandomDataLoad;
+import ru.team1.sorting.utils.save.SortedFileWriter;
 
 import java.io.IOException;
 import java.util.List;
@@ -115,6 +115,25 @@ public class MainPanel extends AbstractPanel {
                 dynamicVisionPanel.search();
             }
         });
+        propertyPanel.getSaveToFileButton().setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                dynamicVisionPanel.saveToFile();
+            }
+        });
+        dynamicVisionPanel.getSaveToFileButton().setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                if (libraryPanel.getBooks().isEmpty()) return;
+                String filePath = dynamicVisionPanel.getFilePathTextField().getText();
+                if (filePath.isEmpty()) {
+                    dynamicVisionPanel.getFilePathTextField().setStyle("");
+                    return;
+                }
+                dynamicVisionPanel.getFilePathTextField().setStyle(null);
+                SortedFileWriter.writeSortedToFile(libraryPanel.getBooks(), filePath, SortType.BY_TITLE.getSortingStrategy());
+            }
+        });
         dynamicVisionPanel.getSearchButton().setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -163,7 +182,7 @@ public class MainPanel extends AbstractPanel {
             @Override
             public void handle(ActionEvent actionEvent) {
                 List<Book> books = libraryPanel.getBooks();
-                ClassSorting.sort(books, dynamicVisionPanel.getSortType().getSortingStrategy());
+                ClassSorting.sort(books, dynamicVisionPanel.getSortTypeToSort().getSortingStrategy());
                 libraryPanel.removeAllBooks();
                 books.forEach(libraryPanel::addBookAfterSort);
                 if (dynamicVisionPanel.isPrintToConsole()) libraryPanel.getBooks().forEach(consolePanel::printBook);

@@ -169,10 +169,9 @@ public class MainPanel extends AbstractPanel {
                     );
                 }
                 long countInCollection = 0;
-                consolePanel.print(libraryPanel.getBooks().toString());
-//                if (book != null) {
-//                    countInCollection = new CountBooksTask(libraryPanel.getBooks(), book).countOccurrences();
-//                }
+                if (book != null) {
+                    countInCollection = new CountBooksTask(libraryPanel.getBooks(), book).countOccurrences();
+                }
 
                 consolePanel.printBookFromSearch(book, countInCollection);
                 if (dynamicVisionPanel.isSaveToFileAfterSearch()) {

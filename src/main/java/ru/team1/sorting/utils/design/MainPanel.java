@@ -182,7 +182,9 @@ public class MainPanel extends AbstractPanel {
             @Override
             public void handle(ActionEvent actionEvent) {
                 List<Book> books = libraryPanel.getBooks();
-                ClassSorting.sort(books, dynamicVisionPanel.getSortTypeToSort().getSortingStrategy());
+                if (dynamicVisionPanel.isDefaultSort())
+                    ClassSorting.sort(books, dynamicVisionPanel.getSortTypeToSort().getSortingStrategy());
+//                else
                 libraryPanel.removeAllBooks();
                 books.forEach(libraryPanel::addBookAfterSort);
                 if (dynamicVisionPanel.isPrintToConsole()) libraryPanel.getBooks().forEach(consolePanel::printBook);

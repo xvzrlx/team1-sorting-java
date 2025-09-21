@@ -24,6 +24,8 @@ public class DynamicVisionPanel extends AbstractPanel {
     private GridPane sortPane;
     @Getter
     private Button sortButton;
+    @Getter
+    private boolean defaultSort = true;
     private RadioButton sortByTitle;
     private RadioButton sortByYear;
     private RadioButton sortByPages;
@@ -41,8 +43,6 @@ public class DynamicVisionPanel extends AbstractPanel {
     private Button saveToFileButton;
     @Getter
     private TextField filePathTextField;
-    @Getter
-    private SortType sortTypeToSaveToFile;
 
     public DynamicVisionPanel() {
         super(ROW_COUNT, COLUMN_COUNT, STYLE);
@@ -112,6 +112,10 @@ public class DynamicVisionPanel extends AbstractPanel {
         sortPane = createGrid(7, 10);
         sortButton = new Button();
         printToConsoleButton = new Button();
+        Button defaultSortButton = new Button();
+        sortPane.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+
+        defaultSortButton.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 
         sortByTitle = new RadioButton("Сортировать по названиям");
         sortByYear = new RadioButton("Сортировать по году");
@@ -159,6 +163,40 @@ public class DynamicVisionPanel extends AbstractPanel {
             }
         });
 
+        defaultSortButton.setStyle(
+                "-fx-background-color: blue;" +
+                        "-fx-text-fill: white;" +
+                        "-fx-border-color: blue;" +
+                        "-fx-border-width: 1px;" +
+                        "-fx-border-radius: 5px;" +
+                        "-fx-background-radius: 5px;");
+
+        defaultSortButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                defaultSort = !defaultSort;
+                if (defaultSort) {
+                    defaultSortButton.setStyle(
+                            "-fx-background-color: blue;" +
+                                    "-fx-text-fill: white;" +
+                                    "-fx-border-color: red;" +
+                                    "-fx-border-width: 1px;" +
+                                    "-fx-border-radius: 5px;" +
+                                    "-fx-background-radius: 5px;"
+                    );
+                } else {
+                    defaultSortButton.setStyle(
+                            "-fx-background-color: blue;" +
+                            "-fx-text-fill: white;" +
+                            "-fx-border-color: blue;" +
+                            "-fx-border-width: 1px;" +
+                            "-fx-border-radius: 5px;" +
+                            "-fx-background-radius: 5px;"
+                    );
+                }
+            }
+        });
+
         loadImageToButton(
                 printToConsoleButton,
                 "/images/print_to_console.png",
@@ -182,8 +220,9 @@ public class DynamicVisionPanel extends AbstractPanel {
         sortPane.add(sortByTitle, 0, 0, 4, 2);
         sortPane.add(sortByPages, 0, 3, 4, 2);
         sortPane.add(sortByYear, 0, 6, 4, 2);
-        sortPane.add(printToConsoleButton, 5, 0, 2, 5);
-        sortPane.add(sortButton, 5, 5, 2, 5);
+        sortPane.add(printToConsoleButton, 4, 0, 2, 5);
+        sortPane.add(sortButton, 4, 5, 2, 5);
+        sortPane.add(defaultSortButton, 6, 0, 1, 2);
     }
 
     public void sort() {

@@ -2,9 +2,15 @@ package ru.team1.sorting.utils.design;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.TextField;
 import lombok.SneakyThrows;
 import ru.team1.sorting.model.Book;
+import ru.team1.sorting.services.search.BinarySearch;
+import ru.team1.sorting.services.search.SearchByPages;
+import ru.team1.sorting.services.search.SearchByTitle;
+import ru.team1.sorting.services.search.SearchByYear;
 import ru.team1.sorting.services.sorting.ClassSorting;
+import ru.team1.sorting.services.sorting.SortType;
 import ru.team1.sorting.utils.CustomArrayList;
 import ru.team1.sorting.utils.FileDataLoad;
 import ru.team1.sorting.utils.ManualDataLoad;
@@ -112,7 +118,39 @@ public class MainPanel extends AbstractPanel {
         dynamicVisionPanel.getSearchButton().setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-//                libraryPanel.get
+                TextField textField = dynamicVisionPanel.getTextFields().stream()
+                        .filter(tf -> !tf.getText().isBlank())
+                        .findFirst().orElseThrow();
+                int firstBlankIndex = dynamicVisionPanel.getTextFields().indexOf(textField);
+                switch (firstBlankIndex) {
+                    case 0 -> consolePanel.printBookFromSearch(
+                            BinarySearch.search(
+                                libraryPanel.getBooks(),
+                                textField.getText(),
+                                SortType.BY_TITLE.getSortingStrategy(),
+                                new SearchByTitle<>()
+                                )
+                        );
+                    case 1 -> consolePanel.printBookFromSearch(
+                            BinarySearch.search(
+                                libraryPanel.getBooks(),
+                                Integer.parseInt(textField.getText()),
+                                SortType.BY_YEAR.getSortingStrategy(),
+                                new SearchByYear<>()
+                            )
+                    );
+                    case 2 -> consolePanel.printBookFromSearch(
+                            BinarySearch.search(
+                                libraryPanel.getBooks(),
+                                Integer.parseInt(textField.getText()),
+                                SortType.BY_PAGES.getSortingStrategy(),
+                                new SearchByPages<>()
+                            )
+                    );
+                }
+
+
+
             }
         });
         propertyPanel.getSortButton().setOnAction(new EventHandler<ActionEvent>() {
